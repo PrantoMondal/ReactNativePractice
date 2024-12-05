@@ -1,15 +1,6 @@
 import { useState } from "react";
-import {
-  Text,
-  TextInput,
-  View,
-  StyleSheet,
-  Button,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { TextInput, View, StyleSheet, Button, FlatList } from "react-native";
+import GoalItem from "./components/GoalItem";
 
 export default function App() {
   const [enteredGoalText, setEnteredGoalText] = useState("");
@@ -19,6 +10,11 @@ export default function App() {
     setEnteredGoalText(enteredText);
   }
 
+  function deleteGoalHandler(key) {
+    setCourseGoals((currentCourseGoals) => {
+      return currentCourseGoals.filter((goalIndex) => goalIndex.key !== key);
+    });
+  }
   function addGoalHandler() {
     enteredGoalText != ""
       ? setCourseGoals((currentCourseGoals) => [
@@ -27,12 +23,6 @@ export default function App() {
         ])
       : null;
     console.log(courseGoals);
-  }
-
-  function deleteGoalHandler(index) {
-    setCourseGoals((currentCourseGoals) => {
-      return currentCourseGoals.filter((goalIndex) => goalIndex.key !== index);
-    });
   }
 
   return (
@@ -51,17 +41,10 @@ export default function App() {
           renderItem={(item) => {
             console.log(courseGoals.length);
             return (
-              <View style={styles.goalCard}>
-                <Text style={styles.goalText}>{item.item.text}</Text>
-                <Ionicons
-                  name="trash-outline"
-                  size={24}
-                  color="white"
-                  onPress={() => {
-                    deleteGoalHandler(item.item.key);
-                  }}
-                />
-              </View>
+              <GoalItem
+                text={item.item.text}
+                onPress={() => deleteGoalHandler(item.item.key)} // Pass as an anonymous function
+              />
             );
           }}
           alwaysBounceVertical={false}
@@ -95,21 +78,20 @@ const styles = StyleSheet.create({
     marginRight: 8,
     width: "70%",
   },
-
   goalsContainer: {
     flex: 5,
   },
-  goalCard: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    margin: 8,
-    padding: 8,
-    borderRadius: 6,
-    backgroundColor: "#5e0acc",
-    marginBottom: 10,
-  },
-  goalText: {
-    color: "white",
-  },
+  // goalCard: {
+  //   flexDirection: "row",
+  //   justifyContent: "space-between",
+  //   alignItems: "center",
+  //   margin: 8,
+  //   padding: 8,
+  //   borderRadius: 6,
+  //   backgroundColor: "#5e0acc",
+  //   marginBottom: 10,
+  // },
+  // goalText: {
+  //   color: "white",
+  // },
 });
