@@ -1,16 +1,17 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 function GoalItem(props) {
   return (
     <View style={styles.goalCard}>
       <Text style={styles.goalText}>{props.text}</Text>
-      <Ionicons
-        name="trash-outline"
-        size={24}
-        color="white"
-        onPress={props.onPress}
-      />
+
+      <Pressable
+        android_ripple={{ color: "#red" }}
+        onPress={props.onDeleteGoal.bind(this, props.id)}
+      >
+        <Ionicons name="trash-outline" size={24} color="white" />
+      </Pressable>
     </View>
   );
 }
